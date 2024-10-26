@@ -4,7 +4,8 @@ import dotenv from'dotenv';
 import connectDB from "./database/connection.js";
 import bodyparser from 'body-parser';
 import express from 'express';
-
+import * as Server from 'socket.io'
+import { Socket } from 'dgram';
 
 dotenv.config();
 const app= express();
@@ -19,6 +20,7 @@ const port= process.env.PORT || 5000;
 app.use(cors(corsConfig));
 app.use(express.json());
 app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({extended: true}));
 
 // definning the routes to be used
 app.get('/', (req, res)=>{
@@ -28,6 +30,19 @@ app.get('/', (req, res)=>{
 // connecting to Database
 connectDB();
 
-app.listen(port, ()=>{
+const server= app.listen(port, ()=>{
     console.log(`Server is listening on portNo: ${port}`);
 });
+const io= new Server.Server(server, {
+    pingTimeout: 60000,
+    cors: {
+      origin: 'http://localhost:3000',
+    },
+});
+
+io.on('connection',(socket)=>{
+    socket.on('setup', (userData)=>{
+        socket.join(userData._id);
+        socket.emit('connected');
+    });
+})

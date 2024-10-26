@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { type } from 'os';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
@@ -31,13 +30,13 @@ const userSchema= mongoose.Schema({
         type: Number,
         required: true
     },
-    tokens: [
-        {
-            token: {
-                type: String
-            }
-        }
-    ]
+    // tokens: [
+    //     {
+    //         token: {
+    //             type: String
+    //         }
+    //     }
+    // ]
 },{timestamps: true});
 
 userSchema.pre("save",async function(next){
