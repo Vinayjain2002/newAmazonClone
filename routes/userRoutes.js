@@ -7,8 +7,8 @@ router.post('/auth/register', registerUser);
 router.post('/auth/login',signUpUser);
 router.get('/auth/valid', Auth, validUser);
 router.get('/auth/logout', Auth, logout);
-router.get('/api/user?', Auth, searchUser)
-router.get('/api/users/:userId', Auth,fetchUser);
+router.get('/api/user?', Auth,isAdmin, searchUser)
+router.get('/api/users/:userId', Auth,isAdmin,fetchUser);
 router.get('/api/users/update/:userId', Auth, updateUser);
 router.get('/api/users',Auth,isAdmin, allUser);
 router.get('/api/delete/userId', Auth,deleteUser);
